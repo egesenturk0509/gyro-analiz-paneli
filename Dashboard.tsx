@@ -16,7 +16,7 @@ interface DashboardProps {
   gyroData: { yon: string; derece: number };
   alertBox: { bg: string; text: string; opacity: string };
   history: HistoryItem[];
-  scrollRef: React.RefObject<HTMLDivElement>;
+  scrollRef: React.RefObject<HTMLDivElement | null>;
   clearHistory: () => void;
 }
 

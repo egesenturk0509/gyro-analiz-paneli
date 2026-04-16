@@ -3,11 +3,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Login } from '../Login';
 import { Sidebar } from '../Sidebar';
 import { Dashboard } from '../Dashboard';
+import { Register } from '../Register';
+import { ForgotPassword } from '../ForgotPassword';
 
 export default function GyroAnalizPaneli() {
   const [mounted, setMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [view, setView] = useState<'login' | 'register' | 'forgot-password'>('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginStatus, setLoginStatus] = useState({ type: '', message: '' });
@@ -174,18 +177,28 @@ export default function GyroAnalizPaneli() {
   if (!mounted) return null;
 
   if (!isLoggedIn) {
-    return (
-      <Login
-        handleLogin={handleLogin}
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
-        loginStatus={loginStatus}
-      />
-    );
+    if (view === 'register') {
+      return <Register onSwitchView={(v) => setView(v as 'login')} />;
+    }
+    if (view === 'forgot-password') {
+      return <ForgotPassword onSwitchView={(v) => setView(v as 'login')} />;
+    }
+    if (view === 'login') {
+      return (
+        <Login
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+          showPassword={showPassword}
+          setShowPassword={setShowPassword}
+          loginStatus={loginStatus}
+          onSwitchView={(v) => setView(v)}
+          onSocialLogin={(provider) => alert(`${provider} ile giriş simüle ediliyor...`)}
+        />
+      );
+    }
   }
 
   return (
